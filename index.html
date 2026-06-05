@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hodeiadata — Auditoría inteligente y control interno automatizado con IA. Diagnóstico, estructura, integración, inteligencia y visualización para empresas que quieren control real.">
+  <meta name="theme-color" content="#0F3D2E">
+  <meta property="og:title" content="Hodeiadata · Auditoría inteligente con IA">
+  <meta property="og:description" content="Convertimos el caos operativo y documental en una capa de control auditable, trazable y accionable.">
+  <title>Hodeiadata · Inteligencia de datos para control interno</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=dm-sans:300,400,500,600,700|fraunces:300,400,500|jetbrains-mono:300,400,500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'verde-deep': '#0A2A1F',
+            'verde-corp': '#0F3D2E',
+            'verde-base': '#1A5F44',
+            'verde-mid':  '#2D7A5F',
+            'verde-soft': '#5BA17F',
+            'verde-mint': '#9CC9B2',
+            'verde-pale': '#D1E7DB',
+            'verde-mist': '#EBF3EE',
+            'crema': '#FAFCFB',
+            'crema-warm': '#F4F1EA',
+            'ink': '#0E1F18',
+            'ink-mid': '#3A4A42'
+          },
+          fontFamily: {
+            'sans': ['DM Sans', 'system-ui', 'sans-serif'],
+            'serif': ['Fraunces', 'Georgia', 'serif'],
+            'mono': ['JetBrains Mono', 'monospace']
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.8s ease-out forwards',
+            'pulse-slow': 'pulse 3s ease-in-out infinite'
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(24px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: #0E1F18;
+      background: #FAFCFB;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-serif-italic { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400; }
+    .gradient-text {
+      background: linear-gradient(135deg, #0F3D2E 0%, #2D7A5F 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(15,61,46,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15,61,46,0.04) 1px, transparent 1px);
+      background-size: 56px 56px;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .pilar-card {
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), border-color 0.4s, background 0.4s;
+    }
+    .pilar-card:hover {
+      transform: translateY(-6px);
+      border-color: #2D7A5F;
+    }
+    .filosofia-step {
+      transition: all 0.4s ease;
+    }
+    .filosofia-step:hover .step-circle {
+      background: #1A5F44;
+      color: white;
+      transform: scale(1.08);
+    }
+    .nav-blur {
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+    }
+    .arrow-flow {
+      width: 24px; height: 1px;
+      background: linear-gradient(to right, #5BA17F, transparent);
+      position: relative;
+    }
+    .arrow-flow::after {
+      content: '';
+      position: absolute;
+      right: 0; top: -3px;
+      width: 7px; height: 7px;
+      border-top: 1px solid #5BA17F;
+      border-right: 1px solid #5BA17F;
+      transform: rotate(45deg);
+    }
+    .checklist li::before {
+      content: '';
+      display: inline-block;
+      width: 14px; height: 14px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A5F44' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/contain no-repeat;
+      margin-right: 10px; vertical-align: -2px;
+    }
+    .form-input {
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #5BA17F;
+      background: rgba(155, 201, 178, 0.05);
+    }
+    @media (max-width: 768px) {
+      .grid-bg { background-size: 32px 32px; }
+    }
+  </style>
+</head>
+<body class="bg-crema text-ink">
+
+<!-- ============== NAV ============== -->
+<nav id="nav" class="fixed top-0 left-0 right-0 z-50 bg-crema/85 nav-blur border-b border-transparent transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-20">
+    <a href="#hero" class="flex items-center gap-3">
+      <img src="logo.png" alt="Hodeiadata" class="h-14 w-auto">
+      <span class="hidden sm:block text-2xl tracking-tight">
+        <span class="font-medium text-verde-corp">Hodeia</span><span class="font-light text-verde-base">data</span>
+      </span>
+    </a>
+    <ul class="hidden lg:flex items-center gap-9 text-sm font-medium text-ink-mid">
+      <li><a href="#filosofia" class="hover:text-verde-base transition-colors">Filosofía</a></li>
+      <li><a href="#pilares" class="hover:text-verde-base transition-colors">Servicios</a></li>
+      <li><a href="#sobre" class="hover:text-verde-base transition-colors">Sobre</a></li>
+      <li><a href="#arquitectura" class="hover:text-verde-base transition-colors">Arquitectura</a></li>
+      <li><a href="#sectores" class="hover:text-verde-base transition-colors">Sectores</a></li>
+      <li><a href="#tarifas" class="hover:text-verde-base transition-colors">Propuesta</a></li>
+      <li><a href="#contacto" class="bg-verde-corp text-white px-5 py-2.5 rounded-full hover:bg-verde-base transition-all">Contactar</a></li>
+    </ul>
+    <button id="hamburger" class="lg:hidden p-2" aria-label="Menú">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-verde-pale bg-crema">
+    <ul class="px-6 py-4 space-y-3 text-sm">
+      <li><a href="#filosofia" class="block py-2 text-ink-mid hover:text-verde-base">Filosofía</a></li>
+      <li><a href="#pilares" class="block py-2 text-ink-mid hover:text-verde-base">Servicios</a></li>
+      <li><a href="#sobre" class="block py-2 text-ink-mid hover:text-verde-base">Sobre</a></li>
+      <li><a href="#arquitectura" class="block py-2 text-ink-mid hover:text-verde-base">Arquitectura</a></li>
+      <li><a href="#sectores" class="block py-2 text-ink-mid hover:text-verde-base">Sectores</a></li>
+      <li><a href="#tarifas" class="block py-2 text-ink-mid hover:text-verde-base">Propuesta</a></li>
+      <li><a href="#contacto" class="block py-2 bg-verde-corp text-white text-center rounded-full mt-2">Contactar</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============== HERO ============== -->
+<section id="hero" class="relative min-h-screen flex items-center pt-24 overflow-hidden">
+  <div class="absolute inset-0 grid-bg"></div>
+  <div class="orb bg-verde-mint/30" style="width:520px; height:520px; top:-8%; right:-6%;"></div>
+  <div class="orb bg-verde-pale/40" style="width:380px; height:380px; bottom:6%; left:-4%;"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 grid lg:grid-cols-12 gap-12 items-center">
+    <div class="lg:col-span-7">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-verde-mist border border-verde-pale rounded-full text-xs font-mono text-verde-base mb-7">
+        <span class="w-1.5 h-1.5 rounded-full bg-verde-base animate-pulse-slow"></span>
+        Consultoría · IA · Auditoría · Control interno
+      </div>
+      <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-verde-deep leading-[1.1] tracking-tight mb-7">
+        Traducimos su operativa<br>
+        en un <span class="font-serif-italic gradient-text">ecosistema inteligente</span><br>
+        adaptado a su negocio.
+      </h1>
+      <p class="text-lg md:text-xl text-ink-mid max-w-2xl leading-relaxed mb-9">
+        Analizamos las operativas de su sector para <span class="text-verde-corp font-medium">detectar ineficiencias ocultas</span>. Diseñamos la traducción de sus procesos reales de negocio hacia un ecosistema inteligente y automatizado. Gracias a la IA de Hodeiadata, construimos una estructura de control adaptada específicamente a las necesidades de su empresa.
+      </p>
+      <div class="flex flex-wrap items-center gap-4 mb-12">
+        <a href="#contacto" class="inline-flex items-center gap-2 bg-verde-corp hover:bg-verde-base text-white px-7 py-3.5 rounded-full font-medium transition-all hover:translate-y-[-2px] shadow-lg shadow-verde-corp/10">
+          Solicitar diagnóstico gratuito
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#pilares" class="inline-flex items-center gap-2 text-verde-corp font-medium hover:text-verde-base transition-colors border-b border-verde-pale hover:border-verde-base pb-1">
+          Ver los 6 pilares de servicio
+        </a>
+      </div>
+
+      <div class="grid grid-cols-3 gap-0 border border-verde-pale rounded-2xl overflow-hidden bg-white/60 max-w-2xl">
+        <div class="p-5 border-r border-verde-pale">
+          <div class="font-serif text-3xl md:text-4xl text-verde-base">−90%</div>
+          <div class="text-xs font-mono text-ink-mid mt-1.5 uppercase tracking-wider">tiempo de auditoría</div>
+        </div>
+        <div class="p-5 border-r border-verde-pale">
+          <div class="font-serif text-3xl md:text-4xl text-verde-base">100%</div>
+          <div class="text-xs font-mono text-ink-mid mt-1.5 uppercase tracking-wider">trazabilidad del dato</div>
+        </div>
+        <div class="p-5">
+          <div class="font-serif text-3xl md:text-4xl text-verde-base">94%</div>
+          <div class="text-xs font-mono text-ink-mid mt-1.5 uppercase tracking-wider">desviaciones detectadas</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-5">
+      <div class="relative">
+        <div class="absolute -inset-4 bg-gradient-to-br from-verde-mint/20 to-verde-pale/10 rounded-3xl blur-2xl"></div>
+        <div class="relative bg-white border border-verde-pale rounded-2xl p-7 shadow-2xl shadow-verde-corp/5">
+          <div class="flex items-center gap-2 mb-5 pb-4 border-b border-verde-pale">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-300"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-300"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-verde-soft"></span>
+            <span class="ml-3 text-xs font-mono text-ink-mid">panel-control · hodeiadata</span>
+          </div>
+          <div class="text-xs font-mono text-ink-mid mb-3">Estado del control interno</div>
+          <div class="space-y-3.5">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-ink">Conciliación bancaria</span>
+              <span class="text-xs px-2.5 py-1 bg-verde-mist text-verde-base rounded-full font-medium">VERDE</span>
+            </div>
+            <div class="h-1.5 bg-verde-mist rounded-full overflow-hidden"><div class="h-full bg-verde-base rounded-full" style="width:94%"></div></div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-ink">Matching de 3 vías</span>
+              <span class="text-xs px-2.5 py-1 bg-amber-50 text-amber-700 rounded-full font-medium">REVISAR</span>
+            </div>
+            <div class="h-1.5 bg-amber-50 rounded-full overflow-hidden"><div class="h-full bg-amber-500 rounded-full" style="width:72%"></div></div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-ink">Trazabilidad documental</span>
+              <span class="text-xs px-2.5 py-1 bg-verde-mist text-verde-base rounded-full font-medium">VERDE</span>
+            </div>
+            <div class="h-1.5 bg-verde-mist rounded-full overflow-hidden"><div class="h-full bg-verde-base rounded-full" style="width:100%"></div></div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-ink">Forecast tesorería</span>
+              <span class="text-xs px-2.5 py-1 bg-red-50 text-red-600 rounded-full font-medium">ALERTA</span>
+            </div>
+            <div class="h-1.5 bg-red-50 rounded-full overflow-hidden"><div class="h-full bg-red-400 rounded-full" style="width:45%"></div></div>
+          </div>
+          <div class="mt-5 pt-4 border-t border-verde-pale text-xs font-mono text-ink-mid flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-verde-base animate-pulse"></span>
+            Actualización en tiempo real · BigQuery
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FILOSOFÍA ============== -->
+<section id="filosofia" class="relative py-24 lg:py-32 bg-crema-warm overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+      <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-base mb-4">// La filosofía Hodeiadata</div>
+      <h2 class="font-serif text-4xl md:text-5xl text-verde-deep leading-tight mb-5">
+        Cinco pasos.<br>
+        <span class="font-serif-italic gradient-text">Un solo objetivo: control.</span>
+      </h2>
+      <p class="text-lg text-ink-mid leading-relaxed">
+        No empezamos con tecnología. Empezamos con tus procesos reales. Después diseñamos la estructura, integramos los flujos, aplicamos inteligencia y devolvemos visibilidad.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-3 relative">
+
+      <div class="filosofia-step text-center reveal">
+        <div class="relative inline-flex flex-col items-center">
+          <div class="step-circle w-16 h-16 rounded-full bg-white border-2 border-verde-base text-verde-base flex items-center justify-center font-serif text-2xl mb-5 transition-all">01</div>
+        </div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-2">Diagnóstico</h3>
+        <p class="text-sm text-ink-mid leading-relaxed px-2">
+          Mapeamos los procesos as-is, las fugas de tiempo y las islas de información.
+        </p>
+      </div>
+
+      <div class="filosofia-step text-center reveal">
+        <div class="relative inline-flex flex-col items-center">
+          <div class="step-circle w-16 h-16 rounded-full bg-white border-2 border-verde-base text-verde-base flex items-center justify-center font-serif text-2xl mb-5 transition-all">02</div>
+        </div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-2">Estructura</h3>
+        <p class="text-sm text-ink-mid leading-relaxed px-2">
+          Diseñamos la base de datos limpia y el modelo relacional que sustenta el control.
+        </p>
+      </div>
+
+      <div class="filosofia-step text-center reveal">
+        <div class="relative inline-flex flex-col items-center">
+          <div class="step-circle w-16 h-16 rounded-full bg-white border-2 border-verde-base text-verde-base flex items-center justify-center font-serif text-2xl mb-5 transition-all">03</div>
+        </div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-2">Integración</h3>
+        <p class="text-sm text-ink-mid leading-relaxed px-2">
+          Conectamos las fuentes existentes — ERPs, Drive, correo — sin reescribir nada.
+        </p>
+      </div>
+
+      <div class="filosofia-step text-center reveal">
+        <div class="relative inline-flex flex-col items-center">
+          <div class="step-circle w-16 h-16 rounded-full bg-white border-2 border-verde-base text-verde-base flex items-center justify-center font-serif text-2xl mb-5 transition-all">04</div>
+        </div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-2">Inteligencia</h3>
+        <p class="text-sm text-ink-mid leading-relaxed px-2">
+          Aplicamos agentes de IA, RAG y modelos predictivos sobre los procesos reales.
+        </p>
+      </div>
+
+      <div class="filosofia-step text-center reveal">
+        <div class="relative inline-flex flex-col items-center">
+          <div class="step-circle w-16 h-16 rounded-full bg-verde-corp border-2 border-verde-corp text-white flex items-center justify-center font-serif text-2xl mb-5 transition-all">05</div>
+        </div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-2">Visualización</h3>
+        <p class="text-sm text-ink-mid leading-relaxed px-2">
+          Dashboards, alertas y reporting ejecutivo accesibles desde cualquier navegador.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== LOS 6 PILARES ============== -->
+<section id="pilares" class="relative py-24 lg:py-32 bg-crema">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-3xl mb-20 reveal">
+      <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-base mb-4">// Arquitectura de servicios</div>
+      <h2 class="font-serif text-4xl md:text-5xl text-verde-deep leading-tight mb-5">
+        Seis pilares.<br>
+        <span class="font-serif-italic gradient-text">Una capa de control completa.</span>
+      </h2>
+      <p class="text-lg text-ink-mid leading-relaxed">
+        Cada pilar resuelve un eslabón del control interno. Juntos forman el ciclo de auditoría inteligente que pasa de la primera ineficiencia detectada al escalado recurrente.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <article class="pilar-card group bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="flex items-start justify-between mb-5">
+          <div class="w-12 h-12 rounded-xl bg-verde-mist flex items-center justify-center text-verde-corp">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v3l2 2"/></svg>
+          </div>
+          <span class="font-mono text-xs text-verde-soft">01</span>
+        </div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-3">Diagnóstico de control interno</h3>
+        <p class="text-sm text-ink-mid leading-relaxed mb-5">
+          Mapa de operaciones y procedimientos con impacto económico. Identificamos brechas, riesgos y puntos ciegos antes de tocar ningún sistema.
+        </p>
+        <ul class="checklist text-xs text-ink-mid space-y-2">
+          <li>Mapeo as-is de procesos clave</li>
+          <li>Matriz de riesgos vs. controles existentes</li>
+          <li>Cálculo de ROI y business case</li>
+        </ul>
+      </article>
+
+      <article class="pilar-card group bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="flex items-start justify-between mb-5">
+          <div class="w-12 h-12 rounded-xl bg-verde-mist flex items-center justify-center text-verde-corp">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-5"/></svg>
+          </div>
+          <span class="font-mono text-xs text-verde-soft">02</span>
+        </div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-3">Diseño del flujo de control</h3>
+        <p class="text-sm text-ink-mid leading-relaxed mb-5">
+          Definición de controles, reglas de negocio, indicadores, umbrales de alerta y evidencias requeridas. La lógica que la IA debe seguir.
+        </p>
+        <ul class="checklist text-xs text-ink-mid space-y-2">
+          <li>Reglas de negocio y KPIs</li>
+          <li>Umbrales y semáforos de alerta</li>
+          <li>Evidencias documentales requeridas</li>
+        </ul>
+      </article>
+
+      <article class="pilar-card group bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="flex items-start justify-between mb-5">
+          <div class="w-12 h-12 rounded-xl bg-verde-mist flex items-center justify-center text-verde-corp">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M22 2 12 12"/><path d="m18 6-6 6"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <span class="font-mono text-xs text-verde-soft">03</span>
+        </div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-3">Automatización con IA</h3>
+        <p class="text-sm text-ink-mid leading-relaxed mb-5">
+          Clasificación de documentos, lectura de expedientes, detección de excepciones, conciliaciones, priorización de incidencias y asistentes para auditores.
+        </p>
+        <ul class="checklist text-xs text-ink-mid space-y-2">
+          <li>Agentes IA con Gemini & Vertex AI</li>
+          <li>Conectores MCP con ERPs y Drive</li>
+          <li>Sistemas RAG sobre conocimiento interno</li>
+        </ul>
+      </article>
+
+      <article class="pilar-card group bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="flex items-start justify-between mb-5">
+          <div class="w-12 h-12 rounded-xl bg-verde-mist flex items-center justify-center text-verde-corp">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <span class="font-mono text-xs text-verde-soft">04</span>
+        </div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-3">Gobernanza y cumplimiento</h3>
+        <p class="text-sm text-ink-mid leading-relaxed mb-5">
+          Modelos de uso seguro, supervisión humana, control de sesgos, trazabilidad y documentación de decisiones. IA con barreras y evidencia.
+        </p>
+        <ul class="checklist text-xs text-ink-mid space-y-2">
+          <li>Framework de Evals y supervisión</li>
+          <li>Logging y trazabilidad por decisión</li>
+          <li>Cumplimiento GDPR · datos en Europa</li>
+        </ul>
+      </article>
+
+      <article class="pilar-card group bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="flex items-start justify-between mb-5">
+          <div class="w-12 h-12 rounded-xl bg-verde-mist flex items-center justify-center text-verde-corp">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          </div>
+          <span class="font-mono text-xs text-verde-soft">05</span>
+        </div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-3">Monitorización continua</h3>
+        <p class="text-sm text-ink-mid leading-relaxed mb-5">
+          Paneles de control, alertas, seguimiento de anomalías, revisión periódica y mejora de reglas. El control vive después del proyecto.
+        </p>
+        <ul class="checklist text-xs text-ink-mid space-y-2">
+          <li>Dashboards Looker Studio en tiempo real</li>
+          <li>Alertas proactivas por umbral</li>
+          <li>Mejora continua del modelo</li>
+        </ul>
+      </article>
+
+      <article class="pilar-card group bg-verde-corp text-white border border-verde-corp rounded-2xl p-7 reveal">
+        <div class="flex items-start justify-between mb-5">
+          <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-verde-mint">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><circle cx="4" cy="12" r="2"/><circle cx="12" cy="10" r="2"/><circle cx="20" cy="14" r="2"/></svg>
+          </div>
+          <span class="font-mono text-xs text-verde-mint/80">06</span>
+        </div>
+        <h3 class="font-serif text-2xl text-white mb-3">Escalado end-to-end</h3>
+        <p class="text-sm text-verde-pale/90 leading-relaxed mb-5">
+          Pasar de un caso piloto a una capa de control interno recurrente en varias áreas o sedes. De prueba de concepto a infraestructura corporativa.
+        </p>
+        <ul class="checklist text-xs text-verde-pale/90 space-y-2" style="list-style:none;padding:0;">
+          <li style="position:relative;padding-left:24px;"><span style="position:absolute;left:0;color:#9CC9B2;">→</span>Modelo replicable por área o sede</li>
+          <li style="position:relative;padding-left:24px;"><span style="position:absolute;left:0;color:#9CC9B2;">→</span>Gestión del cambio organizativo</li>
+          <li style="position:relative;padding-left:24px;"><span style="position:absolute;left:0;color:#9CC9B2;">→</span>Feedback loop humano · iteración continua</li>
+        </ul>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============== SOBRE HODEIADATA ============== -->
+<section id="sobre" class="relative py-24 lg:py-32 bg-crema-warm overflow-hidden">
+  <div class="absolute inset-0 opacity-50">
+    <div class="grid-bg h-full"></div>
+  </div>
+  <div class="orb bg-verde-mint/15" style="width:480px; height:480px; top:10%; right:-12%;"></div>
+
+  <div class="relative max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="max-w-3xl mb-14 reveal">
+      <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-base mb-4">// Sobre Hodeia Data</div>
+      <h2 class="font-serif text-4xl md:text-5xl text-verde-deep leading-tight mb-5">
+        La filosofía<br>
+        <span class="font-serif-italic gradient-text">detrás del producto.</span>
+      </h2>
+    </div>
+
+    <div class="grid lg:grid-cols-[1.5fr_1fr] gap-12 lg:gap-16 items-start">
+      <div class="space-y-6 reveal">
+        <p class="font-serif text-2xl md:text-3xl text-verde-deep leading-snug">
+          Hodeia Data es una startup de IA y análisis de datos, en proceso de formación, que nace de la firme convicción de que las organizaciones invierten demasiado tiempo en la gestión de procesos operativos y documentales complejos que la Inteligencia Artificial puede absorber, <span class="font-serif-italic text-verde-base">sin perder un ápice de rigor ni de control interno.</span>
+        </p>
+
+        <p class="text-lg text-ink-mid leading-relaxed">
+          Hodeia Data nace para resolver un problema que las grandes consultoras no atienden y las herramientas estándar no pueden cubrir: convertir la operativa real de cada empresa — sus PDFs, sus expedientes, sus hojas de cálculo, sus correos — en una arquitectura de control auditable, trazable y accionable.
+        </p>
+
+        <p class="text-lg text-ink-mid leading-relaxed">
+          No diseñamos software aislado. Diseñamos la traducción de procesos de negocio en un ecosistema inteligente. Diagnosticamos los puntos de fuga, estructuramos los datos, integramos lo que ya existe y aplicamos agentes de IA, sistemas RAG y modelos predictivos sobre la operativa real. Todo construido sobre infraestructura Google Cloud, con los datos en Europa y supervisión humana en cada decisión crítica.
+        </p>
+
+        <p class="text-lg text-ink-mid leading-relaxed">
+          <span class="text-verde-corp font-medium">Pensamos como ingenieros en la solución. Hablamos como CFOs y Directores de Operaciones en el diagnóstico y el control.</span> Esa doble lente — técnica y de negocio — es la que distingue un proyecto de IA con impacto real de una automatización sin criterio.
+        </p>
+      </div>
+
+      <aside class="reveal lg:sticky lg:top-28">
+        <div class="bg-white border border-verde-pale rounded-2xl p-7">
+          <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-base mb-5">// Nuestros principios</div>
+          <ul class="space-y-5">
+            <li class="flex gap-4">
+              <span class="font-serif text-verde-base text-3xl leading-none">①</span>
+              <div>
+                <h4 class="font-medium text-verde-deep mb-1">Procesos reales primero</h4>
+                <p class="text-sm text-ink-mid leading-relaxed">No tecnología por tecnología. Mapeamos la operativa antes de proponer nada.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="font-serif text-verde-base text-3xl leading-none">②</span>
+              <div>
+                <h4 class="font-medium text-verde-deep mb-1">Trazabilidad sin excepciones</h4>
+                <p class="text-sm text-ink-mid leading-relaxed">Cada decisión de la IA queda registrada y revisable por una persona.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="font-serif text-verde-base text-3xl leading-none">③</span>
+              <div>
+                <h4 class="font-medium text-verde-deep mb-1">Datos en Europa, control humano</h4>
+                <p class="text-sm text-ink-mid leading-relaxed">Infraestructura GCP en Frankfurt. Datos del cliente nunca entrenan modelos externos.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <span class="font-serif text-verde-base text-3xl leading-none">④</span>
+              <div>
+                <h4 class="font-medium text-verde-deep mb-1">Impacto medible</h4>
+                <p class="text-sm text-ink-mid leading-relaxed">Cada ineficiencia detectada tiene un coste calculado. Cada propuesta, un ROI.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-5 px-6 py-4 bg-verde-mist border border-verde-pale rounded-xl">
+          <p class="text-xs font-mono text-verde-base uppercase tracking-wider mb-1">// Estado actual</p>
+          <p class="text-sm text-ink-mid leading-relaxed">Hodeia Data se encuentra en proceso de formación. Para consultas: <a href="mailto:hola@hodeiadata.es" class="text-verde-corp font-medium hover:underline">hola@hodeiadata.es</a></p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============== ARQUITECTURA ============== -->
+<section id="arquitectura" class="relative py-24 lg:py-32 bg-verde-deep text-white overflow-hidden">
+  <div class="absolute inset-0 opacity-10">
+    <div class="grid-bg h-full" style="background-image: linear-gradient(rgba(155,201,178,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(155,201,178,0.15) 1px, transparent 1px);"></div>
+  </div>
+  <div class="orb" style="width:500px; height:500px; top:10%; right:-10%; background: rgba(91,161,127,0.18);"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-3xl mb-16 reveal">
+      <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-mint mb-4">// Stack tecnológico</div>
+      <h2 class="font-serif text-4xl md:text-5xl text-white leading-tight mb-5">
+        Arquitectura cloud nativa.<br>
+        <span class="font-serif-italic text-verde-mint">100% Google Cloud.</span>
+      </h2>
+      <p class="text-lg text-verde-pale/80 leading-relaxed">
+        Datos almacenados en Europa, infraestructura serverless con escalado automático, créditos iniciales de Google for Startups y Microsoft Founders Hub. Sin coste de arranque.
+      </p>
+    </div>
+
+    <!-- Diagrama de flujo -->
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-8 mb-12 reveal overflow-x-auto">
+      <div class="font-mono text-xs text-verde-mint/70 mb-6">PIPELINE_AUTOMATIZADO.flow</div>
+      <div class="flex items-center justify-between gap-3 min-w-[800px]">
+        <div class="text-center flex-1">
+          <div class="w-14 h-14 mx-auto rounded-xl bg-verde-base/30 border border-verde-base flex items-center justify-center mb-3 text-2xl">📁</div>
+          <div class="font-medium text-sm text-white">Google Drive</div>
+          <div class="text-xs text-verde-mint/70 mt-1 font-mono">Fuente · PDFs</div>
+        </div>
+        <div class="arrow-flow flex-shrink-0"></div>
+        <div class="text-center flex-1">
+          <div class="w-14 h-14 mx-auto rounded-xl bg-verde-base/30 border border-verde-base flex items-center justify-center mb-3 text-2xl">🪣</div>
+          <div class="font-medium text-sm text-white">Cloud Storage</div>
+          <div class="text-xs text-verde-mint/70 mt-1 font-mono">Bucket clasificado</div>
+        </div>
+        <div class="arrow-flow flex-shrink-0"></div>
+        <div class="text-center flex-1">
+          <div class="w-14 h-14 mx-auto rounded-xl bg-verde-base/60 border-2 border-verde-mint flex items-center justify-center mb-3 text-2xl">🧠</div>
+          <div class="font-medium text-sm text-white">Document AI<br>+ Vertex / Gemini</div>
+          <div class="text-xs text-verde-mint/70 mt-1 font-mono">Extracción · IA</div>
+        </div>
+        <div class="arrow-flow flex-shrink-0"></div>
+        <div class="text-center flex-1">
+          <div class="w-14 h-14 mx-auto rounded-xl bg-verde-base/30 border border-verde-base flex items-center justify-center mb-3 text-2xl">🗄️</div>
+          <div class="font-medium text-sm text-white">BigQuery</div>
+          <div class="text-xs text-verde-mint/70 mt-1 font-mono">Tabla maestra · SQL</div>
+        </div>
+        <div class="arrow-flow flex-shrink-0"></div>
+        <div class="text-center flex-1">
+          <div class="w-14 h-14 mx-auto rounded-xl bg-verde-base/30 border border-verde-base flex items-center justify-center mb-3 text-2xl">📊</div>
+          <div class="font-medium text-sm text-white">Looker Studio</div>
+          <div class="text-xs text-verde-mint/70 mt-1 font-mono">Dashboards</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capas -->
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 reveal">
+        <div class="font-mono text-xs text-verde-mint mb-3">CAPA 1 · FUNDAMENTOS</div>
+        <h3 class="font-serif text-xl text-white mb-3">BigQuery Data Warehouse</h3>
+        <p class="text-sm text-verde-pale/80 leading-relaxed">
+          Base de datos limpia, estandarizada y perfectamente estructurada. Tablas de auditoría con trazabilidad línea a línea.
+        </p>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 reveal">
+        <div class="font-mono text-xs text-verde-mint mb-3">CAPA 2 · INTELIGENCIA</div>
+        <h3 class="font-serif text-xl text-white mb-3">Vertex AI & BigQuery ML</h3>
+        <p class="text-sm text-verde-pale/80 leading-relaxed">
+          Modelos predictivos que anticipan desviaciones y detectan anomalías antes de que generen impacto financiero.
+        </p>
+      </div>
+      <div class="bg-verde-base/30 border border-verde-mint/40 rounded-2xl p-6 reveal">
+        <div class="font-mono text-xs text-verde-mint mb-3">CAPA 3 · AUTONOMÍA</div>
+        <h3 class="font-serif text-xl text-white mb-3">Agentic AI Orchestration</h3>
+        <p class="text-sm text-verde-pale/80 leading-relaxed">
+          Agentes autónomos que consolidan, contrastan normativas con RAG y generan informes ejecutivos automáticamente.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SECTORES ============== -->
+<section id="sectores" class="py-24 lg:py-32 bg-crema">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-3xl mb-16 reveal">
+      <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-base mb-4">// Sectores de aplicación</div>
+      <h2 class="font-serif text-4xl md:text-5xl text-verde-deep leading-tight mb-5">
+        Un sistema.<br>
+        <span class="font-serif-italic gradient-text">Múltiples industrias.</span>
+      </h2>
+      <p class="text-lg text-ink-mid leading-relaxed">
+        Si tu organización gestiona documentos, procesos repetitivos o controles financieros, nuestra arquitectura se adapta sin reescribir el código.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="pilar-card bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="text-3xl mb-4">🏢</div>
+        <h3 class="font-serif text-xl text-verde-deep mb-2">Empresa</h3>
+        <p class="text-sm text-ink-mid leading-relaxed">
+          Control de costes operativos, conciliación, matching de 3 vías, asignación analítica y forecast de tesorería.
+        </p>
+      </div>
+      <div class="pilar-card bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="text-3xl mb-4">🍽️</div>
+        <h3 class="font-serif text-xl text-verde-deep mb-2">Hostelería</h3>
+        <p class="text-sm text-ink-mid leading-relaxed">
+          Auditoría de facturas, albaranes y contratos de suministro. Desviaciones por departamento, temporada y proveedor.
+        </p>
+      </div>
+      <div class="pilar-card bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="text-3xl mb-4">⚙️</div>
+        <h3 class="font-serif text-xl text-verde-deep mb-2">Industrial</h3>
+        <p class="text-sm text-ink-mid leading-relaxed">
+          Trazabilidad del dato en planta, gestión inteligente de No Conformidades y soporte en auditorías operativas.
+        </p>
+      </div>
+      <div class="pilar-card bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="text-3xl mb-4">📜</div>
+        <h3 class="font-serif text-xl text-verde-deep mb-2">Legal & Compliance</h3>
+        <p class="text-sm text-ink-mid leading-relaxed">
+          Extracción de cláusulas y obligaciones contractuales, análisis de riesgos y control de plazos críticos.
+        </p>
+      </div>
+      <div class="pilar-card bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="text-3xl mb-4">🏦</div>
+        <h3 class="font-serif text-xl text-verde-deep mb-2">Finanzas & Seguros</h3>
+        <p class="text-sm text-ink-mid leading-relaxed">
+          Cruce automático de siniestros, pólizas y reclamaciones. Detección de anomalías y fraude potencial.
+        </p>
+      </div>
+      <div class="pilar-card bg-white border border-verde-pale rounded-2xl p-7 reveal">
+        <div class="text-3xl mb-4">🏛️</div>
+        <h3 class="font-serif text-xl text-verde-deep mb-2">Sector Público</h3>
+        <p class="text-sm text-ink-mid leading-relaxed">
+          Auditoría de licitaciones, control del gasto público y trazabilidad completa para cumplimiento normativo.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== GARANTÍA ============== -->
+<section class="py-20 bg-verde-corp text-white relative overflow-hidden">
+  <div class="orb" style="width:400px; height:400px; top:-20%; left:30%; background: rgba(155,201,178,0.15);"></div>
+  <div class="max-w-5xl mx-auto px-6 lg:px-8 relative">
+    <div class="flex flex-col md:flex-row items-center gap-10 reveal">
+      <div class="font-serif text-7xl md:text-8xl text-verde-mint flex-shrink-0">94<span class="text-5xl">%</span></div>
+      <div>
+        <h3 class="font-serif text-3xl md:text-4xl mb-3 leading-tight">
+          "Si no encontramos ineficiencias relevantes,<br>
+          <span class="font-serif-italic text-verde-mint">os devolvemos el diagnóstico."</span>
+        </h3>
+        <p class="text-verde-pale/90 leading-relaxed max-w-2xl">
+          En más del 94% de las organizaciones que auditamos detectamos ineficiencias operativas no identificadas por los equipos internos. Si tu diagnóstico inicial no descubre una sola palanca de mejora cuantificable, el servicio es gratuito.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SERVICIOS / PRESUPUESTO ============== -->
+<section id="tarifas" class="py-24 lg:py-32 bg-crema">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+      <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-base mb-4">// Modalidades de servicio</div>
+      <h2 class="font-serif text-4xl md:text-5xl text-verde-deep leading-tight mb-5">
+        Cada empresa es única.<br>
+        <span class="font-serif-italic gradient-text">Cada propuesta también.</span>
+      </h2>
+      <p class="text-lg text-ink-mid leading-relaxed">
+        Diseñamos la solución a partir de tu sector, volumen documental y procesos actuales. Sin paquetes cerrados, sin tarifas estándar. Solo lo que tu negocio realmente necesita.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 mb-12">
+      <div class="bg-white border border-verde-pale rounded-2xl p-8 reveal">
+        <div class="font-mono text-xs text-verde-base uppercase tracking-wider mb-2">Análisis puntual</div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-4">Diagnóstico de Datos</h3>
+        <div class="mb-6 pb-6 border-b border-verde-pale">
+          <div class="font-serif text-2xl text-verde-base italic">Presupuesto a medida</div>
+          <div class="text-xs font-mono text-ink-mid mt-2">Entregable en 5 días hábiles</div>
+        </div>
+        <ul class="checklist text-sm text-ink-mid space-y-2.5 mb-7">
+          <li>Mapa as-is de procesos clave</li>
+          <li>Detección de ineficiencias e impacto económico</li>
+          <li>Informe ejecutivo para dirección</li>
+          <li>Dashboard visual — 30 días de acceso</li>
+          <li>Sesión de presentación de hallazgos</li>
+        </ul>
+        <a href="#contacto" class="block text-center border-2 border-verde-corp text-verde-corp font-medium py-3 rounded-full hover:bg-verde-corp hover:text-white transition-all">Solicitar propuesta</a>
+      </div>
+
+      <div class="relative bg-verde-mist border-2 border-verde-corp rounded-2xl p-8 reveal">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-verde-corp text-white text-xs font-mono uppercase tracking-wider px-4 py-1.5 rounded-full">Más solicitado</div>
+        <div class="font-mono text-xs text-verde-base uppercase tracking-wider mb-2">Servicio continuo</div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-4">Trazabilidad Activa</h3>
+        <div class="mb-6 pb-6 border-b border-verde-pale">
+          <div class="font-serif text-2xl text-verde-corp italic">Presupuesto a medida</div>
+          <div class="text-xs font-mono text-ink-mid mt-2">Cuota mensual adaptada al volumen</div>
+        </div>
+        <ul class="checklist text-sm text-ink-mid space-y-2.5 mb-7">
+          <li>Procesamiento ilimitado de documentos</li>
+          <li>Base de datos en BigQuery en tiempo real</li>
+          <li>Dashboard permanente con semáforo</li>
+          <li>Alertas automáticas por desviación</li>
+          <li>Informe mensual + reunión de seguimiento</li>
+          <li>Soporte prioritario — respuesta 24h</li>
+        </ul>
+        <a href="#contacto" class="block text-center bg-verde-corp text-white font-medium py-3 rounded-full hover:bg-verde-base transition-all">Solicitar propuesta</a>
+      </div>
+
+      <div class="bg-white border border-verde-pale rounded-2xl p-8 reveal">
+        <div class="font-mono text-xs text-verde-base uppercase tracking-wider mb-2">IA avanzada</div>
+        <h3 class="font-serif text-2xl text-verde-deep mb-4">Intelligence Suite</h3>
+        <div class="mb-6 pb-6 border-b border-verde-pale">
+          <div class="font-serif text-2xl text-verde-base italic">Presupuesto a medida</div>
+          <div class="text-xs font-mono text-ink-mid mt-2">Multi-área · multi-sede</div>
+        </div>
+        <ul class="checklist text-sm text-ink-mid space-y-2.5 mb-7">
+          <li>Todo lo de Trazabilidad Activa</li>
+          <li>Multi-área y multi-sede simultáneas</li>
+          <li>Agentes IA conversacionales (RAG)</li>
+          <li>Modelos predictivos a medida</li>
+          <li>Detección automática de anomalías</li>
+          <li>Account manager · SLA 4h</li>
+        </ul>
+        <a href="#contacto" class="block text-center border-2 border-verde-corp text-verde-corp font-medium py-3 rounded-full hover:bg-verde-corp hover:text-white transition-all">Solicitar propuesta</a>
+      </div>
+    </div>
+
+    <!-- Bloque de "cómo cotizamos" -->
+    <div class="bg-white border border-verde-pale rounded-2xl p-8 lg:p-10 reveal">
+      <div class="grid md:grid-cols-[1fr_1.5fr] gap-8 items-center">
+        <div>
+          <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-base mb-4">// Cómo elaboramos su propuesta</div>
+          <h3 class="font-serif text-2xl md:text-3xl text-verde-deep leading-tight">
+            Una llamada de <span class="font-serif-italic gradient-text">30 minutos</span>. Cero compromiso.
+          </h3>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-5">
+          <div class="text-center">
+            <div class="w-10 h-10 mx-auto rounded-full bg-verde-mist text-verde-corp flex items-center justify-center font-serif text-lg mb-3">1</div>
+            <h4 class="font-medium text-sm text-verde-deep mb-1">Sector y procesos</h4>
+            <p class="text-xs text-ink-mid leading-relaxed">Entendemos su actividad y donde duele.</p>
+          </div>
+          <div class="text-center">
+            <div class="w-10 h-10 mx-auto rounded-full bg-verde-mist text-verde-corp flex items-center justify-center font-serif text-lg mb-3">2</div>
+            <h4 class="font-medium text-sm text-verde-deep mb-1">Volumen documental</h4>
+            <p class="text-xs text-ink-mid leading-relaxed">Estimamos el alcance real del proyecto.</p>
+          </div>
+          <div class="text-center">
+            <div class="w-10 h-10 mx-auto rounded-full bg-verde-corp text-white flex items-center justify-center font-serif text-lg mb-3">3</div>
+            <h4 class="font-medium text-sm text-verde-deep mb-1">Propuesta personalizada</h4>
+            <p class="text-xs text-ink-mid leading-relaxed">Recibe la propuesta en 48 horas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FAQ ============== -->
+<section class="py-24 bg-crema-warm">
+  <div class="max-w-5xl mx-auto px-6 lg:px-8">
+    <div class="max-w-3xl mb-12 reveal">
+      <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-base mb-4">// Preguntas frecuentes</div>
+      <h2 class="font-serif text-4xl md:text-5xl text-verde-deep leading-tight">
+        Lo que nos preguntan<br>
+        <span class="font-serif-italic gradient-text">antes de empezar.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-x-10 gap-y-8">
+      <div class="reveal border-l-2 border-verde-base pl-5">
+        <h4 class="font-medium text-verde-deep mb-2">¿Qué ocurre con la confidencialidad?</h4>
+        <p class="text-sm text-ink-mid leading-relaxed">Firmamos NDA antes de recibir ningún documento. Toda la información se almacena en servidores GCP en Europa (Frankfurt), con cifrado en reposo y tránsito. Cada cliente tiene espacio aislado y los datos nunca se usan para entrenar modelos externos.</p>
+      </div>
+      <div class="reveal border-l-2 border-verde-base pl-5">
+        <h4 class="font-medium text-verde-deep mb-2">¿En cuánto tiempo vemos resultados?</h4>
+        <p class="text-sm text-ink-mid leading-relaxed">El Diagnóstico se entrega en 5 días hábiles. Para Trazabilidad Activa, el pipeline está operativo en la primera semana y el primer informe ejecutivo se entrega al cierre del primer mes.</p>
+      </div>
+      <div class="reveal border-l-2 border-verde-base pl-5">
+        <h4 class="font-medium text-verde-deep mb-2">¿Necesitamos instalar algo?</h4>
+        <p class="text-sm text-ink-mid leading-relaxed">No. Todo se opera desde el navegador. Los documentos se comparten por Google Drive o enlace seguro. El dashboard es accesible desde cualquier dispositivo. Conectores MCP con vuestro ERP actual sin migración.</p>
+      </div>
+      <div class="reveal border-l-2 border-verde-base pl-5">
+        <h4 class="font-medium text-verde-deep mb-2">¿Cómo se integra con nuestro ERP?</h4>
+        <p class="text-sm text-ink-mid leading-relaxed">Usamos conectores MCP que permiten a los agentes IA leer y escribir en SAP, Microsoft Dynamics, Sage, Holded u otros sistemas, respetando vuestros roles y permisos. Sin migración ni reescritura.</p>
+      </div>
+      <div class="reveal border-l-2 border-verde-base pl-5">
+        <h4 class="font-medium text-verde-deep mb-2">¿La IA toma decisiones automáticas?</h4>
+        <p class="text-sm text-ink-mid leading-relaxed">No sin supervisión humana. Diseñamos flujos donde la IA detecta, prioriza y propone — pero la decisión final con impacto económico la valida una persona. Toda decisión queda registrada y auditable.</p>
+      </div>
+      <div class="reveal border-l-2 border-verde-base pl-5">
+        <h4 class="font-medium text-verde-deep mb-2">¿Podemos cancelar el servicio mensual?</h4>
+        <p class="text-sm text-ink-mid leading-relaxed">Los servicios mensuales tienen compromiso mínimo (3 meses Trazabilidad, 6 meses Intelligence). Pasado ese período, cancelación con 30 días de preaviso. Al finalizar, entregamos todos los datos en CSV y SQL.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CONTACTO ============== -->
+<section id="contacto" class="py-24 lg:py-32 bg-verde-deep text-white relative overflow-hidden">
+  <div class="orb" style="width:600px; height:600px; bottom:-30%; right:-10%; background: rgba(91,161,127,0.12);"></div>
+  <div class="orb" style="width:400px; height:400px; top:-10%; left:-5%; background: rgba(155,201,178,0.08);"></div>
+
+  <div class="max-w-5xl mx-auto px-6 lg:px-8 relative">
+    <div class="text-center mb-14 reveal">
+      <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-mint mb-4">// Empezamos</div>
+      <h2 class="font-serif text-4xl md:text-6xl text-white leading-tight mb-6">
+        ¿Listos para ver<br>
+        <span class="font-serif-italic text-verde-mint">qué se os escapa?</span>
+      </h2>
+      <p class="text-verde-pale/85 leading-relaxed text-lg max-w-2xl mx-auto">
+        30 minutos. Mapeamos vuestros procesos clave y os decimos exactamente qué ineficiencias encontraremos. Sin compromiso. Sin coste.
+      </p>
+    </div>
+
+    <div class="bg-white/5 border border-white/10 rounded-3xl p-10 md:p-14 reveal text-center">
+      <div class="font-mono text-xs uppercase tracking-[0.18em] text-verde-mint mb-4">// Contacto directo</div>
+      <a href="mailto:hola@hodeiadata.es?subject=Consulta%20desde%20hodeiadata.es" class="inline-block font-serif text-3xl md:text-5xl text-white hover:text-verde-mint transition-colors mb-6 break-all">
+        hola@hodeiadata.es
+      </a>
+      <p class="text-verde-pale/70 text-sm leading-relaxed max-w-xl mx-auto mb-8">
+        Escríbenos directamente desde tu correo. Respondemos en menos de 24 horas con una propuesta inicial de cómo podemos ayudarte y los siguientes pasos.
+      </p>
+      <a href="mailto:hola@hodeiadata.es?subject=Consulta%20desde%20hodeiadata.es" class="inline-flex items-center gap-2 bg-white text-verde-corp font-medium px-8 py-3.5 rounded-full hover:bg-verde-mint hover:text-verde-deep transition-all">
+        Escribir ahora
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 text-center reveal">
+      <div class="bg-white/5 border border-white/10 rounded-xl p-5">
+        <div class="text-verde-mint text-2xl mb-2">🔒</div>
+        <div class="font-medium text-white text-sm mb-1">Confidencial</div>
+        <div class="text-xs text-verde-pale/70">NDA antes de compartir nada</div>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-xl p-5">
+        <div class="text-verde-mint text-2xl mb-2">🇪🇺</div>
+        <div class="font-medium text-white text-sm mb-1">Datos en Europa</div>
+        <div class="text-xs text-verde-pale/70">Google Cloud Frankfurt · GDPR compliant</div>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-xl p-5">
+        <div class="text-verde-mint text-2xl mb-2">⚡</div>
+        <div class="font-medium text-white text-sm mb-1">Respuesta en 24h</div>
+        <div class="text-xs text-verde-pale/70">Sin filtros · trato directo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer class="bg-verde-deep border-t border-white/10 text-verde-pale/70">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 py-14">
+    <div class="grid md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10">
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <img src="logo.png" alt="Hodeiadata" class="h-16 w-auto brightness-0 invert">
+          <span class="text-2xl tracking-tight"><span class="font-medium text-white">Hodeia</span><span class="font-light text-verde-mint">data</span></span>
+        </div>
+        <p class="text-sm leading-relaxed max-w-xs">
+          Consultoría tecnológica y auditoría inteligente con IA. Pensamos como ingenieros. Hablamos como CFOs y Directores de Operaciones.
+        </p>
+      </div>
+      <div>
+        <div class="font-mono text-xs uppercase tracking-wider text-verde-mint mb-4">Pilares</div>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#pilares" class="hover:text-white transition-colors">Diagnóstico</a></li>
+          <li><a href="#pilares" class="hover:text-white transition-colors">Flujo de control</a></li>
+          <li><a href="#pilares" class="hover:text-white transition-colors">Automatización IA</a></li>
+          <li><a href="#pilares" class="hover:text-white transition-colors">Gobernanza</a></li>
+          <li><a href="#pilares" class="hover:text-white transition-colors">Monitorización</a></li>
+          <li><a href="#pilares" class="hover:text-white transition-colors">Escalado E2E</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-mono text-xs uppercase tracking-wider text-verde-mint mb-4">Empresa</div>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#sobre" class="hover:text-white transition-colors">Sobre Hodeia Data</a></li>
+          <li><a href="#filosofia" class="hover:text-white transition-colors">Filosofía</a></li>
+          <li><a href="#arquitectura" class="hover:text-white transition-colors">Arquitectura</a></li>
+          <li><a href="#sectores" class="hover:text-white transition-colors">Sectores</a></li>
+          <li><a href="#contacto" class="hover:text-white transition-colors">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-mono text-xs uppercase tracking-wider text-verde-mint mb-4">Legal</div>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="aviso-legal.html" class="hover:text-white transition-colors">Aviso legal</a></li>
+          <li><a href="politica-privacidad.html" class="hover:text-white transition-colors">Política de privacidad</a></li>
+          <li><a href="politica-cookies.html" class="hover:text-white transition-colors">Política de cookies</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-3 font-mono text-xs text-verde-pale/40">
+      <p>© 2026 Hodeiadata · hodeiadata.es · hola@hodeiadata.es</p>
+      <p>Infraestructura GCP · Datos en Europa · GDPR compliant</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 30) nav.classList.add('border-verde-pale', 'shadow-sm');
+    else nav.classList.remove('border-verde-pale', 'shadow-sm');
+  });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+  // Reveal on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
